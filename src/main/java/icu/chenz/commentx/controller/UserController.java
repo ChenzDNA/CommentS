@@ -1,10 +1,12 @@
 package icu.chenz.commentx.controller;
 
+import com.auth0.jwt.JWT;
 import icu.chenz.commentx.entity.UserEntity;
 import icu.chenz.commentx.service.UserService;
 import icu.chenz.commentx.utils.HandleErrors;
 import icu.chenz.commentx.utils.R;
 import icu.chenz.commentx.utils.annotation.NoPermission;
+import icu.chenz.commentx.utils.cryption.JWTEncryption;
 import icu.chenz.commentx.utils.exception.BadRequest;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 /**
  * @author : Chenz
@@ -30,6 +34,9 @@ public class UserController {
     @PostMapping("/login")
     public R login(@Valid @RequestBody UserEntity user, Errors errors, HttpServletResponse response) throws BadRequest {
         HandleErrors.handle(errors, response);
-        return R.ok(userService.login(user));
+        UserEntity userEntity = userService.login(user);
+        String token = JWTEncryption.createToken(userEntity.getId());
+        response.addHeader("Authorization", token);
+        return R.ok(userEntity);
     }
 }

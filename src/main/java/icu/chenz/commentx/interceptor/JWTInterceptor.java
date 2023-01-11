@@ -2,8 +2,10 @@ package icu.chenz.commentx.interceptor;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import icu.chenz.commentx.utils.annotation.NoPermission;
 import icu.chenz.commentx.utils.R;
+import icu.chenz.commentx.utils.cryption.JWTEncryption;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -18,10 +20,9 @@ import java.io.PrintWriter;
  */
 
 public class JWTInterceptor implements HandlerInterceptor {
-    private final Algorithm algorithm;
 
     public JWTInterceptor(String secret) {
-        algorithm = Algorithm.HMAC512(secret);
+        JWTEncryption.initAlgorithm(secret);
     }
 
     @Override
@@ -36,8 +37,7 @@ public class JWTInterceptor implements HandlerInterceptor {
                 writer.write(R.fail(HttpStatus.UNAUTHORIZED, "未登录").toString());
                 return false;
             }
-            String s = JWT.require(algorithm).build().verify(token).getPayload();
-            request.setAttribute("user", Long.valueOf(s));
+            request.setAttribute("user", JWTEncryption.verifyToken(token));
         }
         return true;
     }
