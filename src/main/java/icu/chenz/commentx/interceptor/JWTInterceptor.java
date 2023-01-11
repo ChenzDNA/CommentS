@@ -33,7 +33,7 @@ public class JWTInterceptor implements HandlerInterceptor {
             String token = request.getHeader("Authentication");
             PrintWriter writer = response.getWriter();
             if (token == null) {
-                writer.write(R.fail(HttpStatus.FORBIDDEN, "未登录").toString());
+                writer.write(R.fail(HttpStatus.UNAUTHORIZED, "未登录").toString());
                 return false;
             }
             String s = JWT.require(algorithm).build().verify(token).getPayload();
