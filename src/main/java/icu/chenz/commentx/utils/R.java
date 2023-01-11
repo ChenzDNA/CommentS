@@ -10,14 +10,14 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class R {
-    HttpStatus code;
+    int code;
 
     String msg;
 
     Object data;
 
     private R(HttpStatus code, String msg, Object data) {
-        this.code = code;
+        this.code = code.value();
         this.msg = msg;
         this.data = data;
     }
@@ -38,6 +38,6 @@ public class R {
     public String toString() {
         return String.format("""
                 {"code":%d,"msg":%s}
-                """, code.value(), msg);
+                """, code, msg);
     }
 }
