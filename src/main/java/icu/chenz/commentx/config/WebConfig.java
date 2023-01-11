@@ -20,7 +20,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        System.out.println(secret);
         registry.addInterceptor(new JWTInterceptor(secret)).addPathPatterns("/**");
     }
 }
