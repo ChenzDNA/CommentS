@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.chenz.commentx.dao.UserDao">
+    <insert id="create" parameterType="userEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into user(nickname, username, password, ctime)
+            value (#{nickname}, #{username}, #{password}, round(unix_timestamp(current_timestamp(3)) * 1000, 0))
+    </insert>
+    <update id="updateNickname">
+        update user
+        set nickname=#{nickname},
+            mtime=round(unix_timestamp(current_timestamp(3)) * 1000, 0)
+        where id = #{id}
+    </update>
+    <update id="updatePassword">
+        update user
+        set password=#{password},
+            mtime=round(unix_timestamp(current_timestamp(3)) * 1000, 0)
+        where id = #{id}
+    </update>
+    <select id="getByIds" resultType="userEntity" parameterType="arraylist">
+        select id, nickname, username, password, ctime, mtime
+        from user
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <select id="getByUsername" resultType="userEntity">
+        select id, nickname, username, password, ctime, mtime
+        from user
+        where username = #{username}
+    </select>
+</mapper>
