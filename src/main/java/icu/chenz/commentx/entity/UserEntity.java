@@ -16,9 +16,9 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class UserEntity extends Entity {
     String nickname;
-    @NotNull
-    @Size(max = 20, min = 4)
+    @NotNull(message = "用户名不能为空")
+    @Size(max = 20, min = 4,message = "用户名长度应在 4 ~ 20 之间")
     String username;
-    @NotNull
+    @NotNull(message = "密码不能为空")
     String password;
 }

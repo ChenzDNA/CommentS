@@ -20,8 +20,8 @@ import java.util.List;
 public class CommentEntity extends Entity {
     // 评论所在的页面
     String context;
-    @NotNull
-    @Size(min = 1, max = 65534)
+    @NotNull(message = "评论不能为空")
+    @Size(min = 1, max = 65534,message = "评论内容过长！")
     String content;
     // 是否可见
     @JsonIgnore
