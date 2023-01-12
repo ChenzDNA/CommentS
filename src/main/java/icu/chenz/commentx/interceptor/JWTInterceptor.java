@@ -1,8 +1,5 @@
 package icu.chenz.commentx.interceptor;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import icu.chenz.commentx.utils.annotation.NoPermission;
 import icu.chenz.commentx.utils.R;
 import icu.chenz.commentx.utils.cryption.JWTEncryption;

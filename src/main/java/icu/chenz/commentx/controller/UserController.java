@@ -8,7 +8,6 @@ import icu.chenz.commentx.utils.annotation.NoPermission;
 import icu.chenz.commentx.utils.cryption.JWTEncryption;
 import icu.chenz.commentx.utils.exception.BadRequest;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.validation.Errors;
@@ -29,7 +28,7 @@ public class UserController {
     @NoPermission
     @PostMapping("/login")
     public R login(@Valid @RequestBody UserEntity user, Errors errors, HttpServletResponse response) throws BadRequest {
-        HandleErrors.handle(errors, response);
+        HandleErrors.handle(errors);
         UserEntity userEntity = userService.login(user);
         String token = JWTEncryption.createToken(userEntity.getId());
         response.addHeader("Authorization", token);
@@ -39,7 +38,7 @@ public class UserController {
     @NoPermission
     @PostMapping("/register")
     public R register(@Valid @RequestBody UserEntity user, Errors errors, HttpServletResponse response) throws BadRequest {
-        HandleErrors.handle(errors, response);
+        HandleErrors.handle(errors);
         UserEntity userEntity = userService.register(user);
         String token = JWTEncryption.createToken(userEntity.getId());
         response.addHeader("Authorization", token);

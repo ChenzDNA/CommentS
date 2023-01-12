@@ -7,7 +7,6 @@ import jakarta.annotation.Resource;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 
 /**
  * @author : Chenz

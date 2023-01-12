@@ -6,7 +6,6 @@ import icu.chenz.commentx.utils.HandleErrors;
 import icu.chenz.commentx.utils.R;
 import icu.chenz.commentx.utils.exception.BadRequest;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +22,8 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/create")
-    public R create(@RequestAttribute("user") Long user, @Valid @RequestBody CommentEntity comment, Errors errors, HttpServletResponse response) throws BadRequest {
-        HandleErrors.handle(errors, response);
+    public R create(@RequestAttribute("user") Long user, @Valid @RequestBody CommentEntity comment, Errors errors) throws BadRequest {
+        HandleErrors.handle(errors);
         comment.setUser(user);
         return R.ok(commentService.comment(comment));
     }
