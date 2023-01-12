@@ -13,3 +13,5 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mappers/*
   type-aliases-package: icu.chenz.commentx.entity
+webconfig:
+  expire-time: 86400000

@@ -13,13 +13,16 @@ import java.util.Date;
 public class JWTEncryption {
     private static Algorithm algorithm;
 
-    public static void initAlgorithm(String secret) {
+    private static Long expireTime;
+
+    public static void initAlgorithm(String secret, Long exp) {
         algorithm = Algorithm.HMAC512(secret);
+        expireTime = exp;
     }
 
     public static String createToken(Long user) {
         return JWT.create()
-                .withExpiresAt(new Date(System.currentTimeMillis() + 2592000000L))
+                .withExpiresAt(new Date(System.currentTimeMillis() + expireTime))
                 .withClaim("user", user).sign(algorithm);
     }
 

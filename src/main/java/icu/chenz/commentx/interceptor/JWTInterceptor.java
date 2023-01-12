@@ -18,8 +18,8 @@ import java.io.PrintWriter;
 
 public class JWTInterceptor implements HandlerInterceptor {
 
-    public JWTInterceptor(String secret) {
-        JWTEncryption.initAlgorithm(secret);
+    public JWTInterceptor(String secret, Long expireTime) {
+        JWTEncryption.initAlgorithm(secret, expireTime);
     }
 
     @Override

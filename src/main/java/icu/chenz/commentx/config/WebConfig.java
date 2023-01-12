@@ -18,8 +18,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Setter
     private String secret;
 
+    @Setter
+    private Long expireTime;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JWTInterceptor(secret)).addPathPatterns("/**");
+        registry.addInterceptor(new JWTInterceptor(secret, expireTime)).addPathPatterns("/**");
     }
 }
