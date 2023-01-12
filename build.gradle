@@ -28,6 +28,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'com.auth0:java-jwt:4.2.1'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+	implementation 'org.mindrot:jbcrypt:0.4'
 }
 
 tasks.named('test') {

@@ -20,7 +20,7 @@ public class JWTEncryption {
 
     public static String createToken(Long user) {
         return JWT.create()
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 2592000000L))
                 .withClaim("user", user).sign(algorithm);
     }
 

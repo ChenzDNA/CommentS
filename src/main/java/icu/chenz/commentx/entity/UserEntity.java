@@ -1,5 +1,6 @@
 package icu.chenz.commentx.entity;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -17,7 +18,8 @@ import lombok.ToString;
 public class UserEntity extends Entity {
     String nickname;
     @NotNull(message = "用户名不能为空")
-    @Size(max = 20, min = 4,message = "用户名长度应在 4 ~ 20 之间")
+    @Size(max = 20, min = 4, message = "用户名长度应在 4 ~ 20 之间")
+    @NotBlank(message = "用户名不能为空")
     String username;
     @NotNull(message = "密码不能为空")
     String password;
