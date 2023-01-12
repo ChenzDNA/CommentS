@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @SpringBootTest
@@ -22,7 +23,7 @@ class CommentXApplicationTests {
 
     @Test
     void contextLoads() {
-        List<UserEntity> byIds = userDao.getByIds(new ArrayList<>() {
+        List<UserEntity> byIds = userDao.getByIds(new HashSet<>() {
             {
                 add(1L);
                 add(2L);

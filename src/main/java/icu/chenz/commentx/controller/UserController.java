@@ -12,10 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -47,5 +44,15 @@ public class UserController {
         String token = JWTEncryption.createToken(userEntity.getId());
         response.addHeader("Authorization", token);
         return R.ok(userEntity);
+    }
+
+    @PostMapping("/updateNickname")
+    public R updateNickname(@RequestAttribute("user") Long id, String nickname) {
+        return R.ok(userService.updateNickname(id, nickname));
+    }
+
+    @PostMapping("/updatePassword")
+    public R updatePassword(@RequestAttribute("user") Long id, String password) {
+        return R.ok(userService.updatePassword(id, password));
     }
 }

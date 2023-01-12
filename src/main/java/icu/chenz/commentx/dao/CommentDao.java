@@ -7,6 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface CommentDao {
+    CommentEntity getById(Long id);
+
     List<CommentEntity> getByContext(String context);
 
     List<CommentEntity> getSubCommentsByParentId(Long parent);

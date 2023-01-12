@@ -7,6 +7,8 @@ import jakarta.annotation.Resource;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 /**
  * @author : Chenz
  * @date : 2023-01-09 18:19
@@ -36,5 +38,13 @@ public class UserService {
         user.setNickname("新用户" + System.currentTimeMillis());
         userDao.create(user);
         return user;
+    }
+
+    public int updateNickname(Long id, String nickname) {
+        return userDao.updateNickname(id, nickname);
+    }
+
+    public int updatePassword(Long id, String newPassword) {
+        return userDao.updatePassword(id, newPassword);
     }
 }

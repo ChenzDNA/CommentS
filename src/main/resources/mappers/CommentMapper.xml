@@ -50,4 +50,16 @@
         from contexts
         where name = #{name}
     </select>
+    <select id="getById" resultType="commentEntity">
+        select id,
+               context,
+               content,
+               reply,
+               parent,
+               user,
+               ctime,
+               mtime
+        from comments
+        where id = #{id}
+    </select>
 </mapper>
