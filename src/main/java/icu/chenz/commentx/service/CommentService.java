@@ -9,6 +9,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,7 +31,11 @@ public class CommentService {
         HashMap<String, List<? extends Entity>> res = new HashMap<>(2);
         List<CommentEntity> comments = commentDao.getByContext(context);
         res.put("comments", comments);
-        res.put("users", userDao.getByIds(comments.stream().map(CommentEntity::getUser).collect(Collectors.toSet())));
+        HashSet<Long> query = new HashSet<>(comments.stream().map(CommentEntity::getUser).toList());
+        comments.stream()
+                .map(CommentEntity::getSubComments)
+                .forEach(item -> query.addAll(item.stream().map(CommentEntity::getUser).toList()));
+        res.put("users", userDao.getByIds(query));
         return res;
     }
 
