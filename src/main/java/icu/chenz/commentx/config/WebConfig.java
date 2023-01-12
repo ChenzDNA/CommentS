@@ -13,13 +13,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 
 @Configuration
-@ConfigurationProperties(prefix = "webconfig")
+@ConfigurationProperties(prefix = "commentx")
 public class WebConfig implements WebMvcConfigurer {
     @Setter
-    private String secret;
+    private String secret = null;
 
     @Setter
-    private Long expireTime;
+    private Long expireTime = 86400000L;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
