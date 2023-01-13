@@ -54,4 +54,9 @@ public class UserController {
     public R updatePassword(@RequestAttribute("user") Long id, String password) {
         return R.ok(userService.updatePassword(id, password));
     }
+
+    @PostMapping("/t")
+    public R c(@RequestAttribute("user") Long id) {
+        return R.ok(userService.c(id));
+    }
 }

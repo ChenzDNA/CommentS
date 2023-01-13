@@ -46,4 +46,8 @@ public class UserService {
     public int updatePassword(Long id, String newPassword) {
         return userDao.updatePassword(id, newPassword);
     }
+
+    public UserEntity c(Long id) {
+        return userDao.getById(id);
+    }
 }

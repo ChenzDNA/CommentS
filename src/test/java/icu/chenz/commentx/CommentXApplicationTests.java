@@ -9,7 +9,6 @@ import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -43,9 +42,9 @@ class CommentXApplicationTests {
         String token = JWTEncryption.createToken(123L);
         System.out.println(token);
 
-//        Thread.sleep(3000);
+        Thread.sleep(100);
 
-        Long aLong = JWTEncryption.verifyToken(token + "123");
+        Long aLong = JWTEncryption.verifyToken(token);
         System.out.println(aLong);
     }
 

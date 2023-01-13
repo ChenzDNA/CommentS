@@ -17,4 +17,6 @@ public interface UserDao {
     int updatePassword(Long id, String password);
 
     int create(UserEntity user);
+
+    UserEntity getById(Long id);
 }
