@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 
 @Configuration
-@ConfigurationProperties(prefix = "commentx")
+@ConfigurationProperties(prefix = "commentx.jwt")
 public class WebConfig implements WebMvcConfigurer {
     @Setter
     private String secret = null;

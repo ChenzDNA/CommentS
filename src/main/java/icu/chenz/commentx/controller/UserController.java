@@ -1,5 +1,6 @@
 package icu.chenz.commentx.controller;
 
+import icu.chenz.commentx.adapter.UserAdapter;
 import icu.chenz.commentx.entity.UserEntity;
 import icu.chenz.commentx.service.UserService;
 import icu.chenz.commentx.utils.HandleErrors;
@@ -7,7 +8,9 @@ import icu.chenz.commentx.utils.R;
 import icu.chenz.commentx.utils.annotation.NoPermission;
 import icu.chenz.commentx.utils.cryption.JWTEncryption;
 import icu.chenz.commentx.utils.exception.BadRequest;
+import icu.chenz.commentx.utils.exception.ForbiddenRequest;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.validation.Errors;
@@ -25,10 +28,15 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private UserAdapter userAdapter;
+
     @NoPermission
     @PostMapping("/login")
-    public R login(@Valid @RequestBody UserEntity user, Errors errors, HttpServletResponse response) throws BadRequest {
-        HandleErrors.handle(errors);
+    public R login(@Valid @RequestBody UserEntity user, Errors errors, HttpServletResponse response) throws Exception {
+        if (!userAdapter.isEnable()) {
+            HandleErrors.handle(errors);
+        }
         UserEntity userEntity = userService.login(user);
         String token = JWTEncryption.createToken(userEntity.getId());
         response.addHeader("Authorization", token);
@@ -37,7 +45,10 @@ public class UserController {
 
     @NoPermission
     @PostMapping("/register")
-    public R register(@Valid @RequestBody UserEntity user, Errors errors, HttpServletResponse response) throws BadRequest {
+    public R register(@Valid @RequestBody UserEntity user, Errors errors, HttpServletResponse response) throws BadRequest, ForbiddenRequest {
+        if (userAdapter.isEnable()) {
+            throw new ForbiddenRequest("已禁用");
+        }
         HandleErrors.handle(errors);
         UserEntity userEntity = userService.register(user);
         String token = JWTEncryption.createToken(userEntity.getId());
@@ -58,5 +69,14 @@ public class UserController {
     @PostMapping("/t")
     public R c(@RequestAttribute("user") Long id) {
         return R.ok(userService.c(id));
+    }
+
+    @NoPermission
+    @PostMapping("/r")
+    public R r(@RequestBody UserEntity user, HttpServletRequest request) throws ForbiddenRequest {
+        if (!userAdapter.isEnable() || !request.getHeader(userAdapter.getKey()).equals(userAdapter.getValue())) {
+            throw new ForbiddenRequest("已禁用");
+        }
+        return R.ok(userService.r(user));
     }
 }
