@@ -66,11 +66,17 @@ public class UserController {
         return R.ok(userService.updatePassword(id, password));
     }
 
+    /**
+     * 只携带 token 调用的接口
+     */
     @PostMapping("/t")
-    public R c(@RequestAttribute("user") Long id) {
+    public R t(@RequestAttribute("user") Long id) {
         return R.ok(userService.c(id));
     }
 
+    /**
+     * 由第三方调用的注册接口，不校验数据。
+     */
     @NoPermission
     @PostMapping("/r")
     public R r(@RequestBody UserEntity user, HttpServletRequest request) throws ForbiddenRequest {
