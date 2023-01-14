@@ -13,6 +13,11 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mappers/*
   type-aliases-package: icu.chenz.commentx.entity
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude: '*'
 commentx:
   jwt:
     expire-time: 86400001
