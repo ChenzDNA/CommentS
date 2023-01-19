@@ -32,10 +32,11 @@ public class JWTInterceptor implements HandlerInterceptor {
             if (request.getMethod().equals("GET")) {
                 return true;
             }
-            String token = request.getHeader("Authentication");
-            PrintWriter writer = response.getWriter();
+            String token = request.getHeader("Authorization");
             if (token == null) {
+                PrintWriter writer = response.getWriter();
                 writer.write(R.fail(HttpStatus.UNAUTHORIZED, "未登录").toString());
+                writer.close();
                 return false;
             }
             request.setAttribute("user", JWTEncryption.verifyToken(token));
