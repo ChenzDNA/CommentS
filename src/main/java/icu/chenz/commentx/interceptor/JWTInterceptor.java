@@ -1,7 +1,7 @@
 package icu.chenz.commentx.interceptor;
 
-import icu.chenz.commentx.utils.annotation.NoPermission;
 import icu.chenz.commentx.utils.R;
+import icu.chenz.commentx.utils.annotation.NoPermission;
 import icu.chenz.commentx.utils.cryption.JWTEncryption;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,6 +25,7 @@ public class JWTInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod method) {
+            response.setHeader("Content-Type","application/json;charset=utf8");
             if (method.hasMethodAnnotation(NoPermission.class)) {
                 return true;
             }
