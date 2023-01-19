@@ -13,6 +13,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,11 +59,17 @@ public class UserController {
 
     @PostMapping("/updateNickname")
     public R updateNickname(@RequestAttribute("user") Long id, String nickname) {
+        if (nickname == null || nickname.length() == 0) {
+            return R.fail(HttpStatus.BAD_REQUEST, "昵称不可为空");
+        }
         return R.ok(userService.updateNickname(id, nickname));
     }
 
     @PostMapping("/updatePassword")
     public R updatePassword(@RequestAttribute("user") Long id, String password) {
+        if (password == null || password.length() == 0) {
+            return R.fail(HttpStatus.BAD_REQUEST, "密码不可为空");
+        }
         return R.ok(userService.updatePassword(id, password));
     }
 
