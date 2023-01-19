@@ -18,7 +18,7 @@ public class HandleErrors {
         }
         String s = errors.getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.joining(";"));
+                .collect(Collectors.joining("; "));
         throw new BadRequest(s);
     }
 }
