@@ -37,7 +37,7 @@ public class R {
     @Override
     public String toString() {
         return String.format("""
-                {"code":%d,"msg":%s}
+                {"code":%d,"msg":"%s"}
                 """, code, msg);
     }
 }
