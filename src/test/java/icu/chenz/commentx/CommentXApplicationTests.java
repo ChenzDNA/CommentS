@@ -1,5 +1,6 @@
 package icu.chenz.commentx;
 
+import icu.chenz.commentx.controller.CommentController;
 import icu.chenz.commentx.dao.CommentDao;
 import icu.chenz.commentx.dao.UserDao;
 import icu.chenz.commentx.entity.CommentEntity;
@@ -20,6 +21,9 @@ class CommentXApplicationTests {
     @Resource
     CommentDao commentDao;
 
+    @Resource
+    CommentController commentController;
+
     @Test
     void contextLoads() {
         List<UserEntity> byIds = userDao.getByIds(new HashSet<>() {
@@ -35,6 +39,8 @@ class CommentXApplicationTests {
     void comments() {
         List<CommentEntity> byContext = commentDao.getByContext("123");
         System.out.println(byContext);
+        System.out.println("--------");
+        System.out.println(commentController.getByContext("123").getData());
     }
 
     @Test
