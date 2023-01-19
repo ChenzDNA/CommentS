@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://dna03.com:3306/commentx?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+    url: jdbc:mysql://dna03.com:3306/comments?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -12,12 +12,12 @@ mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mappers/*
-  type-aliases-package: icu.chenz.commentx.entity
+  type-aliases-package: icu.chenz.comments.entity
 management:
   endpoints:
     web:
       exposure:
         exclude: '*'
-commentx:
+comments:
   jwt:
     expire-time: 86400001

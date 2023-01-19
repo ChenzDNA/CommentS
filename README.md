@@ -1,4 +1,4 @@
-# CommentX 评论系统
+# CommentS 评论系统
 
 ## 介绍
 
@@ -7,7 +7,7 @@
 ## 基本配置
 
 ```yaml
-commentx:
+comments:
   jwt:
     secret:       <string>
     expire-time:  <number> # millisecond. default 86400000L (1 day).
@@ -18,7 +18,7 @@ commentx:
 ### 1.配置
 
 ```yaml
-commentx:
+comments:
   adapter:
     enable:       true
     key:          <string>
