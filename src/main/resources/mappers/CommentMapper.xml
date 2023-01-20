@@ -29,7 +29,7 @@
         where context = #{context}
           and visible = 1
           and parent is null
-        order by ctime
+        order by ctime desc
     </select>
     <select id="getSubCommentsByParentId" resultType="commentEntity">
         select id,
@@ -43,7 +43,7 @@
         from comments
         where parent = #{parent}
           and visible = 1
-        order by ctime
+        order by ctime desc
     </select>
     <select id="getContextString" resultType="string">
         select name
