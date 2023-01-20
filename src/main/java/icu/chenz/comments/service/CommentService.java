@@ -51,6 +51,7 @@ public class CommentService {
             throw new BadRequest("未知文章");
         }
         commentDao.create(entity);
+        entity.setCtime(System.currentTimeMillis());
         return entity;
     }
 }
