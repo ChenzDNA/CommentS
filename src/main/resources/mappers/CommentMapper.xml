@@ -44,7 +44,7 @@
         from comments
         where parent = #{parent}
           and visible = 1
-        order by ctime desc
+        order by ctime
     </select>
     <select id="getContextString" resultType="string">
         select name
