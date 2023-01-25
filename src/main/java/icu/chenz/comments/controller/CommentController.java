@@ -25,6 +25,12 @@ public class CommentController {
     public R create(@RequestAttribute("user") Long user, @Valid @RequestBody CommentEntity comment, Errors errors) throws BadRequest {
         HandleErrors.handle(errors);
         comment.setUser(user);
+        if (comment.getReply() == 0) {
+            comment.setReply(null);
+        }
+        if (comment.getParent() == 0) {
+            comment.setParent(null);
+        }
         return R.ok(commentService.comment(comment));
     }
 
