@@ -8,10 +8,8 @@ import icu.chenz.comments.utils.exception.BadRequest;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 /**
  * @author : Chenz
@@ -30,6 +28,10 @@ public class CommentService {
         HashMap<String, List<? extends Entity>> res = new HashMap<>(2);
         List<CommentEntity> comments = commentDao.getByContext(context);
         res.put("comments", comments);
+        if (comments == null || comments.size() == 0) {
+            res.put("users", new ArrayList<>());
+            return res;
+        }
         HashSet<Long> query = new HashSet<>(comments.stream().map(CommentEntity::getUser).toList());
         comments.stream()
                 .map(CommentEntity::getSubComments)

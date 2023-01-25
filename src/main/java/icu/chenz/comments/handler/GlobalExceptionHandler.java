@@ -32,7 +32,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public R tokenError() {
+    public R tokenError(Exception e) {
+        e.printStackTrace();
         return R.fail(HttpStatus.INTERNAL_SERVER_ERROR, "未知错误，请联系开发者");
     }
 }
