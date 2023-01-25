@@ -21,7 +21,7 @@ public class CommentEntity extends Entity {
     // 评论所在的页面
     String context;
     @NotNull(message = "评论不能为空")
-    @Size(min = 1, max = 65534,message = "评论内容过长！")
+    @Size(min = 1, max = 65534,message = "没有评论内容或内容过长！")
     String content;
     // 是否可见
     @JsonIgnore
