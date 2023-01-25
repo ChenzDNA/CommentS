@@ -9,10 +9,10 @@ spring:
   banner:
     location: banner.txt
 mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mappers/*
   type-aliases-package: icu.chenz.comments.entity
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 management:
   endpoints:
     web:
