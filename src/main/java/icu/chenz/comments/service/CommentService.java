@@ -29,6 +29,7 @@ public class CommentService {
 
     public Map<String, Object> getByContext(String context) {
         HashMap<String, Object> res = new HashMap<>(2);
+        res.put("author", authorConfig.getName());
         List<CommentEntity> comments = commentDao.getByContext(context);
         res.put("comments", comments);
         if (comments == null || comments.size() == 0) {
@@ -40,7 +41,6 @@ public class CommentService {
                 .map(CommentEntity::getSubComments)
                 .forEach(item -> query.addAll(item.stream().map(CommentEntity::getUser).toList()));
         res.put("users", userDao.getByIds(query));
-        res.put("author", authorConfig.getName());
         return res;
     }
 
