@@ -1,9 +1,9 @@
 package icu.chenz.comments.service;
 
+import icu.chenz.comments.config.AuthorConfig;
 import icu.chenz.comments.dao.CommentDao;
 import icu.chenz.comments.dao.UserDao;
 import icu.chenz.comments.entity.CommentEntity;
-import icu.chenz.comments.entity.Entity;
 import icu.chenz.comments.utils.exception.BadRequest;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -24,8 +24,11 @@ public class CommentService {
     @Resource
     private UserDao userDao;
 
-    public Map<String, List<? extends Entity>> getByContext(String context) {
-        HashMap<String, List<? extends Entity>> res = new HashMap<>(2);
+    @Resource
+    private AuthorConfig authorConfig;
+
+    public Map<String, Object> getByContext(String context) {
+        HashMap<String, Object> res = new HashMap<>(2);
         List<CommentEntity> comments = commentDao.getByContext(context);
         res.put("comments", comments);
         if (comments == null || comments.size() == 0) {
@@ -37,6 +40,7 @@ public class CommentService {
                 .map(CommentEntity::getSubComments)
                 .forEach(item -> query.addAll(item.stream().map(CommentEntity::getUser).toList()));
         res.put("users", userDao.getByIds(query));
+        res.put("author", authorConfig.getName());
         return res;
     }
 

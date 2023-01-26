@@ -11,6 +11,8 @@ comments:
   jwt:
     secret:       <string>
     expire-time:  <number> # millisecond. default 86400000L (1 day).
+  author:
+    name:         <string> # 你的用户名。应和你自己账号的 username 一致。
 ```
 
 ## 对接现有的服务

@@ -21,3 +21,6 @@ management:
 comments:
   jwt:
     expire-time: 86400001
+    secret: 123456
+  author:
+    name: ChenzDNA
