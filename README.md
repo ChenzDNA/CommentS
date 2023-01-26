@@ -80,3 +80,5 @@ ip 白名单。
 - feat: 目前 context 还没有实现优雅的管理方法
 - feat: 登录验证（邮箱，手机号等）
 - feat: 接口限流
+
+*第一次设计并实现这种 SDK 一样的系统，有些地方可能想的比较天真，欢迎提 issue 或 pull request*
