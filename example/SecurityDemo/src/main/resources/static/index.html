@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SecurityDemo</title>
+</head>
+<body>
+
+<div id="user-input">
+    <label for="username">用户名</label>
+    <input type="text" id="username"/>
+    <button onclick="register()">注册</button>
+    <br/>
+    <label for="password">密&emsp;码</label>
+    <input type="password" id="password"/>
+    <button onclick="login()">登录</button>
+    <button onclick="logout()">登出</button>
+</div>
+<div id="hello">
+
+</div>
+
+<iframe id="commentsFrame" src="http://localhost:5173/" style="width: 100%;border: none;"></iframe>
+<script>
+  const commentsFrame = document.getElementById('commentsFrame')
+  let rec = false
+  window.addEventListener('message', (e) => {
+    if (commentsFrame.src.startsWith(e.origin) && typeof e.data == 'number') {
+      rec = true
+      commentsFrame.setAttribute('height', e.data + 1)
+    }
+  })
+
+  function send() {
+    if (rec) {
+      return
+    }
+    let context = '123'
+    window.frames[0].postMessage({ type: 'init', origin: location.origin, context }, commentsFrame.src)
+    setTimeout(send, 1000)
+  }
+
+  setTimeout(send, 1000)
+
+  function generateRequest() {
+    let password = document.getElementById('password').value;
+    let username = document.getElementById('username').value;
+    return {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `username=${username}&password=${password}`,
+    }
+  }
+
+  function register() {
+    let requestOptions = generateRequest()
+    fetch('http://localhost:8081/user/register', requestOptions)
+      .then(async result => {
+        let user = JSON.parse(await result.text())
+        console.log(user, result.headers.get('Authorization'))
+        window.frames[0].postMessage({
+          type: 'adapt',
+          user,
+          token: result.headers.get('Authorization')
+        }, commentsFrame.src)
+      })
+      .catch(error => console.log('error', error));
+  }
+
+  function login() {
+    let requestOptions = generateRequest();
+    fetch("http://localhost:8081/user/login", requestOptions)
+      .then(async result => {
+        let user = JSON.parse(await result.text())
+        console.log(user, result.headers.get('Authorization'))
+        window.frames[0].postMessage({
+          type: 'adapt',
+          user,
+          token: result.headers.get('Authorization')
+        }, commentsFrame.src)
+      })
+      .catch(error => console.log('error', error));
+  }
+
+  function logout() {
+    window.frames[0].postMessage({ type: 'logout' }, commentsFrame.src)
+  }
+</script>
+
+</body>
+</html>
