@@ -1,6 +1,10 @@
-# CommentS 评论系统
+# CommentS 评论服务
+
+[![OSCS Status](https://www.oscs1024.com/platform/badge/CommentS.svg?size=small)](https://www.murphysec.com/accept?code=4207b9367e9511badb55691c447f83db&type=1&from=2)
 
 ## 介绍
+
+可以部署到自己的服务器的评论服务。
 
 包含基本的登录注册（使用 JWT），楼中楼评论。可以引入各静态博客中，依靠 context 区分不同文章的评论。
 
