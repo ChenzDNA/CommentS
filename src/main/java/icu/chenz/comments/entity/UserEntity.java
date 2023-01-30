@@ -23,4 +23,13 @@ public class UserEntity extends Entity {
     String username;
     @NotNull(message = "密码不能为空")
     String password;
+
+    public UserEntity() {
+    }
+
+    public UserEntity(String username, String password, String nickname) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+    }
 }

@@ -1,7 +1,6 @@
 package icu.chenz.comments.config;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +9,9 @@ import org.springframework.stereotype.Component;
  * @date : 2023-01-26 20:21
  */
 
+@Data
 @Component
 @ConfigurationProperties(prefix = "comments.author")
 public class AuthorConfig {
-    @Getter
-    @Setter
     private String name = null;
 }

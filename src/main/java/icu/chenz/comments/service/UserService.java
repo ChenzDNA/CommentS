@@ -1,6 +1,5 @@
 package icu.chenz.comments.service;
 
-import icu.chenz.comments.adapter.UserAdapter;
 import icu.chenz.comments.dao.UserDao;
 import icu.chenz.comments.entity.UserEntity;
 import icu.chenz.comments.utils.exception.BadRequest;
@@ -19,20 +18,10 @@ public class UserService {
     @Resource
     UserDao userDao;
 
-    @Resource
-    UserAdapter userAdapter;
-
     public UserEntity login(UserEntity user) throws Exception {
         UserEntity userEntity = userDao.getByUsername(user.getUsername());
         if (userEntity == null) {
             throw new BadRequest("用户不存在");
-        }
-        if (userAdapter.isEnable()) {
-            if (userAdapter.verifyPassword(user.getUsername(), user.getPassword())) {
-                return userEntity;
-            } else {
-                throw new BadRequest("密码错误");
-            }
         }
         if (!BCrypt.checkpw(user.getPassword(), userEntity.getPassword())) {
             throw new BadRequest("密码错误");
@@ -64,5 +53,9 @@ public class UserService {
 
     public int r(UserEntity user) {
         return userDao.create(user);
+    }
+
+    public UserEntity c(String username) {
+        return userDao.getByUsername(username);
     }
 }

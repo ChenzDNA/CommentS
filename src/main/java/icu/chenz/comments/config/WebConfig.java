@@ -1,9 +1,10 @@
 package icu.chenz.comments.config;
 
 import icu.chenz.comments.interceptor.JWTInterceptor;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,13 +13,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date : 2023-01-11 20:09
  */
 
+@Data
+@Component
 @Configuration
 @ConfigurationProperties(prefix = "comments.jwt")
 public class WebConfig implements WebMvcConfigurer {
-    @Setter
     private String secret = null;
 
-    @Setter
     private Long expireTime = 86400000L;
 
     @Override

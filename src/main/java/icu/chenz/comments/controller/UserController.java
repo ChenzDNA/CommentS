@@ -35,9 +35,10 @@ public class UserController {
     @NoPermission
     @PostMapping("/login")
     public R login(@Valid @RequestBody UserEntity user, Errors errors, HttpServletResponse response) throws Exception {
-        if (!userAdapter.isEnable()) {
-            HandleErrors.handle(errors);
+        if (userAdapter.isEnable()) {
+            throw new ForbiddenRequest("已禁用");
         }
+        HandleErrors.handle(errors);
         UserEntity userEntity = userService.login(user);
         String token = JWTEncryption.createToken(userEntity.getId());
         response.addHeader("Authorization", token);
@@ -82,14 +83,29 @@ public class UserController {
     }
 
     /**
-     * 由第三方调用的注册接口，不校验数据。
+     * 对接的系统调用此接口，不校验数据。
      */
     @NoPermission
     @PostMapping("/r")
-    public R r(@RequestBody UserEntity user, HttpServletRequest request) throws ForbiddenRequest {
-        if (!userAdapter.isEnable() || !request.getHeader(userAdapter.getKey()).equals(userAdapter.getValue())) {
+    public R r(String username, String nickname, HttpServletRequest request, HttpServletResponse response) throws ForbiddenRequest {
+        if (!userAdapter.isEnable() || !userAdapter.getValue().equals(request.getHeader(userAdapter.getKey()))) {
             throw new ForbiddenRequest("已禁用");
         }
-        return R.ok(userService.r(user));
+        UserEntity user = new UserEntity(username, "adapted", nickname);
+        userService.r(user);
+        response.setHeader("Authorization", JWTEncryption.createToken(user.getId()));
+        return R.ok(user.getId());
+    }
+
+    @NoPermission
+    @PostMapping("/g")
+    public R t(String username, HttpServletRequest request, HttpServletResponse response) throws ForbiddenRequest {
+        if (!userAdapter.isEnable() ||
+                !userAdapter.getTokenGenerationValue().equals(request.getHeader(userAdapter.getTokenGenerationKey()))) {
+            throw new ForbiddenRequest("已禁用");
+        }
+        UserEntity user = userService.c(username);
+        response.setHeader("Authorization", JWTEncryption.createToken(user.getId()));
+        return R.ok(user.getId());
     }
 }
