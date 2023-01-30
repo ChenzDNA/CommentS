@@ -88,8 +88,12 @@ public class UserController {
     @NoPermission
     @PostMapping("/r")
     public R r(String username, String nickname, HttpServletRequest request, HttpServletResponse response) throws ForbiddenRequest {
-        if (!userAdapter.isEnable() || !userAdapter.getValue().equals(request.getHeader(userAdapter.getKey()))) {
+        if (!userAdapter.isEnable()) {
             throw new ForbiddenRequest("已禁用");
+        }
+        if (userAdapter.getKey() == null ||
+                !userAdapter.getValue().equals(request.getHeader(userAdapter.getKey()))) {
+            throw new ForbiddenRequest("验证失败");
         }
         UserEntity user = new UserEntity(username, "adapted", nickname);
         userService.r(user);
@@ -100,9 +104,12 @@ public class UserController {
     @NoPermission
     @PostMapping("/g")
     public R t(String username, HttpServletRequest request, HttpServletResponse response) throws ForbiddenRequest {
-        if (!userAdapter.isEnable() ||
-                !userAdapter.getTokenGenerationValue().equals(request.getHeader(userAdapter.getTokenGenerationKey()))) {
+        if (!userAdapter.isEnable()) {
             throw new ForbiddenRequest("已禁用");
+        }
+        if (userAdapter.getTokenGenerationKey() == null ||
+                !userAdapter.getTokenGenerationValue().equals(request.getHeader(userAdapter.getTokenGenerationKey()))) {
+            throw new ForbiddenRequest("验证失败");
         }
         UserEntity user = userService.c(username);
         response.setHeader(userAdapter.getTokenHeaderKey(), JWTEncryption.createToken(user.getId()));
