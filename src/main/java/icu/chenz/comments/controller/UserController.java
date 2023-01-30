@@ -93,7 +93,7 @@ public class UserController {
         }
         UserEntity user = new UserEntity(username, "adapted", nickname);
         userService.r(user);
-        response.setHeader("Authorization", JWTEncryption.createToken(user.getId()));
+        response.setHeader(userAdapter.getTokenGenerationKey(), JWTEncryption.createToken(user.getId()));
         return R.ok(user.getId());
     }
 
@@ -105,7 +105,7 @@ public class UserController {
             throw new ForbiddenRequest("已禁用");
         }
         UserEntity user = userService.c(username);
-        response.setHeader("Authorization", JWTEncryption.createToken(user.getId()));
+        response.setHeader(userAdapter.getTokenHeaderKey(), JWTEncryption.createToken(user.getId()));
         return R.ok(user.getId());
     }
 }
