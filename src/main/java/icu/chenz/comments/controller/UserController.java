@@ -83,7 +83,7 @@ public class UserController {
     }
 
     /**
-     * 对接的系统调用此接口，不校验数据。
+     * 对接的系统注册时调用此接口，不校验数据。
      */
     @NoPermission
     @PostMapping("/r")
@@ -101,6 +101,9 @@ public class UserController {
         return R.ok(user.getId());
     }
 
+    /**
+     * 对接的系统登录时调用此接口，生成 token。
+     */
     @NoPermission
     @PostMapping("/g")
     public R t(String username, HttpServletRequest request, HttpServletResponse response) throws ForbiddenRequest {
