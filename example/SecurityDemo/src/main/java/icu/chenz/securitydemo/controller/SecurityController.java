@@ -1,6 +1,7 @@
 package icu.chenz.securitydemo.controller;
 
 import icu.chenz.securitydemo.client.CommentSClient;
+import icu.chenz.securitydemo.constant.CommentSConstant;
 import lombok.SneakyThrows;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -31,7 +32,7 @@ public class SecurityController implements AuthenticationSuccessHandler, Authent
         request.getSession().setAttribute("username", name);
         response.setContentType("application/json;charset=utf-8");
         Map<String, String> token = CommentSClient.getToken(name);
-        response.setHeader("Authorization", token.get("token"));
+        response.setHeader(CommentSConstant.COMMENTS_TOKEN_HEADER_KEY, token.get("token"));
         PrintWriter writer = response.getWriter();
         // nickname 是你定义的 nickname，不从 CommentS 里获取。
         writer.write(String.format("""
@@ -53,7 +54,7 @@ public class SecurityController implements AuthenticationSuccessHandler, Authent
         // 再把数据同步到 CommentS
         Map<String, String> token = CommentSClient.register(username, nickname);
         response.setContentType("application/json;charset=utf-8");
-        response.setHeader("Authorization", token.get("token"));
+        response.setHeader(CommentSConstant.COMMENTS_TOKEN_HEADER_KEY, token.get("token"));
         PrintWriter writer = response.getWriter();
         writer.write(String.format("""
                 {"username":"%s","nickname":"%s","id":%d}
