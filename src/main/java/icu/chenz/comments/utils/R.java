@@ -9,29 +9,29 @@ import org.springframework.http.HttpStatus;
  */
 
 @Getter
-public class R {
+public class R<T> {
     int code;
 
     String msg;
 
-    Object data;
+    T data;
 
-    private R(HttpStatus code, String msg, Object data) {
+    private R(HttpStatus code, String msg, T data) {
         this.code = code.value();
         this.msg = msg;
         this.data = data;
     }
 
-    public static R ok(Object data) {
+    public static <T> R<T> ok(T data) {
         return ok(null, data);
     }
 
-    public static R ok(String msg, Object data) {
-        return new R(HttpStatus.OK, msg, data);
+    public static <T> R<T> ok(String msg, T data) {
+        return new R<>(HttpStatus.OK, msg, data);
     }
 
-    public static R fail(HttpStatus code, String msg) {
-        return new R(code, msg, null);
+    public static R<String> fail(HttpStatus code, String msg) {
+        return new R<>(code, msg, null);
     }
 
     @Override

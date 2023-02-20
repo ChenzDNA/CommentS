@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class HandleErrors {
     public static void handle(Errors errors) throws BadRequest {
-        if (!errors.hasErrors()) {
+        if (errors == null || !errors.hasErrors()) {
             return;
         }
         String s = errors.getAllErrors().stream()

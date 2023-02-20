@@ -16,6 +16,4 @@ public interface CommentDao {
     int delete(Long id);
 
     int create(CommentEntity commentEntity);
-
-    String getContextString(String context);
 }

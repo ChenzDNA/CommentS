@@ -7,8 +7,8 @@
                      select="icu.chenz.comments.dao.CommentDao.getSubCommentsByParentId"/>
     </resultMap>
     <insert id="create" parameterType="commentEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into comments(context, content, reply, parent, user, ctime)
-            value (#{context}, #{content}, #{reply}, #{parent}, #{user},
+        insert into comments(`context`, content, reply, parent, `user`, ctime)
+            value (#{contextId}, #{content}, #{reply}, #{parent}, #{user},
             round(unix_timestamp(current_timestamp(3)) * 1000, 0))
     </insert>
     <update id="delete">
@@ -18,23 +18,22 @@
         where id = #{id}
     </update>
     <select id="getByContext" resultType="commentEntity" resultMap="comment">
-        select id,
-               context,
-               content,
-               reply,
-               parent,
-               user,
-               ctime,
-               mtime
-        from comments
-        where context = #{context}
-          and visible = 1
-          and parent is null
-        order by ctime desc
+        select c1.id      as id,
+               c1.content as content,
+               c1.reply   as reply,
+               c1.parent  as parent,
+               c1.user as 'user',
+               c1.ctime as ctime,
+               c1.mtime as mtime
+        from comments as c1 left join contexts as c2
+        on c1.context=c2.id
+        where c2.name = #{context}
+          and c1.visible = 1
+          and c1.parent is null
+        order by c1.ctime desc
     </select>
     <select id="getSubCommentsByParentId" resultType="commentEntity">
         select id,
-               context,
                content,
                reply,
                parent,
@@ -46,18 +45,12 @@
           and visible = 1
         order by ctime
     </select>
-    <select id="getContextString" resultType="string">
-        select name
-        from contexts
-        where name = #{name}
-    </select>
     <select id="getById" resultType="commentEntity">
         select id,
-               context,
                content,
                reply,
                parent,
-               user,
+               `user`,
                ctime,
                mtime
         from comments

@@ -1,6 +1,7 @@
 package icu.chenz.comments.controller;
 
 import icu.chenz.comments.entity.CommentEntity;
+import icu.chenz.comments.entity.IDEntity;
 import icu.chenz.comments.service.CommentService;
 import icu.chenz.comments.utils.HandleErrors;
 import icu.chenz.comments.utils.R;
@@ -9,6 +10,8 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * @author : Chenz
@@ -22,7 +25,7 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/create")
-    public R create(@RequestAttribute("user") Long user, @Valid @RequestBody CommentEntity comment, Errors errors) throws BadRequest {
+    public R<CommentEntity> create(@RequestAttribute("user") Long user, @Valid @RequestBody CommentEntity comment, Errors errors) throws BadRequest {
         HandleErrors.handle(errors);
         comment.setUser(user);
         if (comment.getReply() != null && comment.getReply() == 0) {
@@ -38,12 +41,17 @@ public class CommentController {
     }
 
     @PostMapping("/delete")
-    public R delete(@RequestAttribute("user") Long user, Long id) throws BadRequest {
-        return R.ok(commentService.delete(user, id));
+    public R<Integer> delete(@RequestAttribute("user") Long user, @RequestBody IDEntity commentId) throws BadRequest {
+        return R.ok(commentService.delete(user, commentId.getId()));
     }
 
     @GetMapping("/getByContext")
-    public R getByContext(@RequestParam("context") String context) {
-        return R.ok(commentService.getByContext(context));
+    public R<Map<String, Object>> getByContext(@RequestAttribute(value = "user", required = false) Long user, @RequestParam("context") String context) {
+        return R.ok(commentService.getByContext(user, context));
+    }
+
+    @PostMapping("/top")
+    public R<Integer> top(@RequestAttribute("user") Long user, @RequestBody IDEntity commentId) throws BadRequest {
+        return R.ok(commentService.top(user, commentId.getId()));
     }
 }
