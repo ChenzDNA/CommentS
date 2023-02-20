@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -13,9 +14,10 @@ import lombok.ToString;
  */
 
 @Data
+@NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class UserEntity extends Entity {
+public class UserEntity extends BaseEntity {
     String nickname;
     @NotNull(message = "用户名不能为空")
     @NotBlank(message = "用户名不能为空")
@@ -23,9 +25,6 @@ public class UserEntity extends Entity {
     String username;
     @NotNull(message = "密码不能为空")
     String password;
-
-    public UserEntity() {
-    }
 
     public UserEntity(String username, String password, String nickname) {
         this.username = username;

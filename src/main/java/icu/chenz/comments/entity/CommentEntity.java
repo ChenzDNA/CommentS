@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
@@ -15,13 +16,15 @@ import java.util.List;
  */
 
 @Data
+@NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class CommentEntity extends Entity {
+public class CommentEntity extends BaseEntity {
     // 评论所在的页面
+    Long contextId;
     String context;
     @NotNull(message = "评论不能为空")
-    @Size(min = 1, max = 65534,message = "没有评论内容或内容过长！")
+    @Size(min = 1, max = 65534, message = "没有评论内容或内容过长！")
     String content;
     // 是否可见
     @JsonIgnore
@@ -33,4 +36,9 @@ public class CommentEntity extends Entity {
     // 发评论的用户
     Long user;
     List<CommentEntity> subComments;
+
+    public CommentEntity(String content, String context) {
+        this.content = content;
+        this.context = context;
+    }
 }
