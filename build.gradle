@@ -30,6 +30,8 @@ dependencies {
     implementation 'com.auth0:java-jwt:4.2.1'
     implementation 'org.mindrot:jbcrypt:0.4'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    // https://mvnrepository.com/artifact/com.alibaba.fastjson2/fastjson2
+    testImplementation 'com.alibaba.fastjson2:fastjson2:2.0.24'
 }
 
 tasks.named('test') {
