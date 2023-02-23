@@ -6,6 +6,7 @@ import icu.chenz.comments.service.CommentService;
 import icu.chenz.comments.utils.HandleErrors;
 import icu.chenz.comments.utils.R;
 import icu.chenz.comments.utils.exception.BadRequest;
+import icu.chenz.comments.utils.exception.ForbiddenRequest;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.validation.Errors;
@@ -51,7 +52,7 @@ public class CommentController {
     }
 
     @PostMapping("/top")
-    public R<Integer> top(@RequestAttribute("user") Long user, @RequestBody IDEntity commentId) throws BadRequest {
+    public R<Integer> top(@RequestAttribute("user") Long user, @RequestBody IDEntity commentId) throws ForbiddenRequest {
         return R.ok(commentService.top(user, commentId.getId()));
     }
 }

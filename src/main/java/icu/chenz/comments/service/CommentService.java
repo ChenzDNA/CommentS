@@ -8,6 +8,7 @@ import icu.chenz.comments.entity.CommentEntity;
 import icu.chenz.comments.entity.ContextEntity;
 import icu.chenz.comments.entity.UserEntity;
 import icu.chenz.comments.utils.exception.BadRequest;
+import icu.chenz.comments.utils.exception.ForbiddenRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -75,10 +76,10 @@ public class CommentService {
         return entity;
     }
 
-    public int top(Long user, Long commentId) throws BadRequest {
+    public int top(Long user, Long commentId) throws ForbiddenRequest {
         String username = userDao.getById(user).getUsername();
         if (!username.equals(authorConfig.getName())) {
-            throw new BadRequest("?");
+            throw new ForbiddenRequest("?");
         }
         return contextDao.updateTop(commentId);
     }

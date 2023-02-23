@@ -7,7 +7,6 @@ import icu.chenz.comments.controller.CommentController;
 import icu.chenz.comments.entity.CommentEntity;
 import icu.chenz.comments.entity.IDEntity;
 import icu.chenz.comments.utils.R;
-import icu.chenz.comments.utils.exception.BadRequest;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +29,7 @@ class CommentSApplicationTests {
     }
 
     @Test
-    public void commentControllerCreateAndTop() throws BadRequest {
+    public void commentControllerCreateAndTop() throws Exception {
         R<CommentEntity> r = commentController.create(1L, new CommentEntity("45666", "123"), null);
         Assert.notNull(r.getData(), "commentController.create returns null.");
         System.out.println(r.getData());
