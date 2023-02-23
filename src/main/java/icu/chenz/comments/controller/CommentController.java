@@ -52,7 +52,7 @@ public class CommentController {
     }
 
     @PostMapping("/top")
-    public R<Integer> top(@RequestAttribute("user") Long user, @RequestBody IDEntity commentId) throws ForbiddenRequest {
+    public R<Integer> top(@RequestAttribute("user") Long user, @RequestBody IDEntity commentId) throws ForbiddenRequest, BadRequest {
         return R.ok(commentService.top(user, commentId.getId()));
     }
 }

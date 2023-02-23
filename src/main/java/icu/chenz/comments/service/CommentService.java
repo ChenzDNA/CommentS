@@ -76,10 +76,17 @@ public class CommentService {
         return entity;
     }
 
-    public int top(Long user, Long commentId) throws ForbiddenRequest {
+    public int top(Long user, Long commentId) throws ForbiddenRequest, BadRequest {
         String username = userDao.getById(user).getUsername();
         if (!username.equals(authorConfig.getName())) {
             throw new ForbiddenRequest("?");
+        }
+        CommentEntity comment = commentDao.getById(commentId);
+        if (comment == null) {
+            throw new BadRequest("虚空评论。");
+        }
+        if (comment.getParent() != null) {
+            throw new BadRequest("回复评论不能置顶。");
         }
         return contextDao.updateTop(commentId);
     }
