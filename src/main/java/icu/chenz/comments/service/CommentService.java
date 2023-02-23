@@ -38,6 +38,12 @@ public class CommentService {
             contextDao.createContext(context);
         }
         res.put("comments", comments);
+        ContextEntity contextByName = contextDao.getContextByName(context);
+        if (contextByName != null) {
+            res.put("top", contextByName.getTop());
+        } else {
+            res.put("top", -1);
+        }
         if (comments == null || comments.size() == 0) {
             res.put("users", new ArrayList<>());
             return res;
