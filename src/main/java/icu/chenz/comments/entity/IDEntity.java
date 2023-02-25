@@ -1,8 +1,6 @@
 package icu.chenz.comments.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @author : Chenz
@@ -10,6 +8,8 @@ import lombok.NoArgsConstructor;
  */
 
 @Data
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class IDEntity {

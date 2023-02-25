@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.chenz.comments.dao.LikeDao">
+    <insert id="create" parameterType="likeEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into likes(uid, cid, type, ctime)
+            value (#{uid}, #{cid}, #{type}, round(unix_timestamp(current_timestamp(3)) * 1000, 0))
+    </insert>
+    <update id="updateType">
+        update likes
+        set type=#{type}
+        where uid = #{uid}
+          and cid = #{cid}
+    </update>
+    <delete id="delete">
+        delete
+        from likes
+        where uid = #{uid}
+          and cid = #{cid}
+    </delete>
+    <select id="getCommentsLike" resultType="map">
+        select sum(type) as 'like',
+        truncate(count(0)-sum(type),0) as 'dislike',
+        cid
+        from likes
+        where cid in
+        <foreach collection="commentIDList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        group by cid
+    </select>
+    <select id="getByUIDAndCID" resultType="likeEntity">
+        select id, uid, cid, type, ctime, mtime
+        from likes
+        where uid = #{uid}
+          and cid = #{cid}
+    </select>
+    <select id="getUserLike" resultType="long">
+        select cid from likes where uid=#{uid} and cid in
+        <foreach collection="commentIDList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

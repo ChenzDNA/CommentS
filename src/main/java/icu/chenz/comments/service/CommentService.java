@@ -3,15 +3,18 @@ package icu.chenz.comments.service;
 import icu.chenz.comments.config.AuthorConfig;
 import icu.chenz.comments.dao.CommentDao;
 import icu.chenz.comments.dao.ContextDao;
+import icu.chenz.comments.dao.LikeDao;
 import icu.chenz.comments.dao.UserDao;
 import icu.chenz.comments.entity.CommentEntity;
 import icu.chenz.comments.entity.ContextEntity;
+import icu.chenz.comments.entity.IDEntity;
 import icu.chenz.comments.entity.UserEntity;
 import icu.chenz.comments.utils.exception.BadRequest;
 import icu.chenz.comments.utils.exception.ForbiddenRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -31,6 +34,8 @@ public class CommentService {
 
     private final ContextDao contextDao;
 
+    private final LikeDao likeDao;
+
     public Map<String, Object> getByContext(Long user, String context) {
         HashMap<String, Object> res = new HashMap<>(2);
         res.put("author", authorConfig.getName());
@@ -39,21 +44,49 @@ public class CommentService {
             contextDao.createContext(context);
         }
         res.put("comments", comments);
+
+        List<CommentEntity> commentEntityFlatList = new ArrayList<>();
+        if (comments != null && comments.size() != 0) {
+            commentEntityFlatList.addAll(comments);
+            comments.stream().map(CommentEntity::getSubComments).forEach(commentEntityFlatList::addAll);
+            commentEntityFlatList.sort(Comparator.comparingLong(IDEntity::getId));
+            System.out.println(commentEntityFlatList.stream().map(IDEntity::getId).toList());
+        }
+
+        // todo 异步处理 评论涉及的用户
+        if (commentEntityFlatList.size() != 0) {
+            // 提取顶层评论的 user
+            HashSet<Long> query = new HashSet<>(commentEntityFlatList.stream().map(CommentEntity::getUser).toList());
+            res.put("users", userDao.getByIds(query));
+        } else {
+            res.put("users", new ArrayList<>());
+        }
+
+        // todo 异步处理 置顶的评论
         ContextEntity contextByName = contextDao.getContextByName(context);
-        if (contextByName != null) {
+        if (contextByName != null && contextByName.getTop() != null) {
             res.put("top", contextByName.getTop());
         } else {
             res.put("top", -1);
         }
-        if (comments == null || comments.size() == 0) {
-            res.put("users", new ArrayList<>());
-            return res;
+
+        // todo 异步处理 like数据
+        if (commentEntityFlatList.size() != 0) {
+            List<Long> commentIDList = commentEntityFlatList.stream().map(CommentEntity::getId).toList();
+            Map<Long, Map<String, Object>> likeMap = likeDao.getCommentsLike(commentIDList);
+            System.out.println(likeMap);
+            for (CommentEntity c : commentEntityFlatList) {
+                Map<String, Object> likes = likeMap.get(c.getId());
+                if (likes != null) {
+                    c.setLikes(((BigDecimal) likes.get("like")).intValue());
+                    c.setDislikes(((BigDecimal) likes.get("dislike")).intValue());
+                }
+            }
+            res.put("userLike", likeDao.getUserLike(user, commentIDList));
+        } else {
+            res.put("userLike", new ArrayList<>());
         }
-        HashSet<Long> query = new HashSet<>(comments.stream().map(CommentEntity::getUser).toList());
-        comments.stream()
-                .map(CommentEntity::getSubComments)
-                .forEach(item -> query.addAll(item.stream().map(CommentEntity::getUser).toList()));
-        res.put("users", userDao.getByIds(query));
+
         return res;
     }
 

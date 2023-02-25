@@ -36,6 +36,8 @@ public class CommentEntity extends BaseEntity {
     // 发评论的用户
     Long user;
     List<CommentEntity> subComments;
+    Integer likes = 0;
+    Integer dislikes = 0;
 
     public CommentEntity(String content, String context) {
         this.content = content;
