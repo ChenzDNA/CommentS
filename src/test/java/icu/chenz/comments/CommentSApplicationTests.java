@@ -4,6 +4,8 @@ import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONWriter;
 import icu.chenz.comments.config.AuthorConfig;
 import icu.chenz.comments.controller.CommentController;
+import icu.chenz.comments.controller.LikeController;
+import icu.chenz.comments.dao.LikeDao;
 import icu.chenz.comments.entity.CommentEntity;
 import icu.chenz.comments.entity.IDEntity;
 import icu.chenz.comments.utils.R;
@@ -23,6 +25,12 @@ class CommentSApplicationTests {
     @Resource
     private CommentController commentController;
 
+    @Resource
+    private LikeController likeController;
+
+    @Resource
+    private LikeDao likeDao;
+
     @Test
     public void s() {
         System.out.println(authorConfig.getName());
@@ -41,12 +49,19 @@ class CommentSApplicationTests {
 
     @Test
     public void commentControllerGets() {
-        R<Map<String, Object>> byContext = commentController.getByContext(1L, "789");
+        R<Map<String, Object>> byContext = commentController.getByContext(1L, "123");
         Assert.notNull(byContext.getData(), "commentController.getByContext returns null.");
         System.out.println(JSONObject.toJSONString(
                 byContext.getData(),
                 JSONWriter.Feature.PrettyFormat,
                 JSONWriter.Feature.WriteNulls
         ));
+
+    }
+
+    @Test
+    public void testLike() throws Exception {
+        likeController.create(1L, 2L, (byte) 0);
+        likeController.create(1L, 2L, (byte) 1);
     }
 }
