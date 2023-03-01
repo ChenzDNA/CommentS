@@ -5,10 +5,7 @@ import icu.chenz.comments.dao.CommentDao;
 import icu.chenz.comments.dao.ContextDao;
 import icu.chenz.comments.dao.LikeDao;
 import icu.chenz.comments.dao.UserDao;
-import icu.chenz.comments.entity.CommentEntity;
-import icu.chenz.comments.entity.ContextEntity;
-import icu.chenz.comments.entity.IDEntity;
-import icu.chenz.comments.entity.UserEntity;
+import icu.chenz.comments.entity.*;
 import icu.chenz.comments.utils.exception.BadRequest;
 import icu.chenz.comments.utils.exception.ForbiddenRequest;
 import lombok.RequiredArgsConstructor;
@@ -80,9 +77,23 @@ public class CommentService {
                     c.setDislikes(((BigDecimal) likes.get("dislike")).intValue());
                 }
             }
-            res.put("userLike", likeDao.getUserLike(user, commentIDList));
+            List<LikeEntity> userLikeInfo = likeDao.getUserLike(user, commentIDList);
+            List<Long> userLike = new ArrayList<>();
+            List<Long> userDislike = new ArrayList<>();
+
+            for (LikeEntity l : userLikeInfo) {
+                if (l.getType() == 0) {
+                    userDislike.add(l.getCid());
+                    continue;
+                }
+                userLike.add(l.getCid());
+            }
+
+            res.put("userLike", userLike);
+            res.put("userDislike", userDislike);
         } else {
             res.put("userLike", new ArrayList<>());
+            res.put("userDislike", new ArrayList<>());
         }
 
         return res;

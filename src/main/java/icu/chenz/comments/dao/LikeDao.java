@@ -25,5 +25,5 @@ public interface LikeDao {
 
     int updateType(Long uid, Long cid, Byte type);
 
-    List<Long> getUserLike(Long uid, List<Long> commentIDList);
+    List<LikeEntity> getUserLike(Long uid, List<Long> commentIDList);
 }

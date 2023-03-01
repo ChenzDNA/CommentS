@@ -34,8 +34,9 @@
         where uid = #{uid}
           and cid = #{cid}
     </select>
-    <select id="getUserLike" resultType="long">
-        select cid from likes where uid=#{uid} and cid in
+    <select id="getUserLike" resultType="likeEntity">
+        select id, uid, cid, type, ctime, mtime
+        from likes where uid=#{uid} and cid in
         <foreach collection="commentIDList" item="id" open="(" close=")" separator=",">
             #{id}
         </foreach>

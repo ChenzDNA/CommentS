@@ -29,9 +29,6 @@ public class JWTInterceptor implements HandlerInterceptor {
             if (method.hasMethodAnnotation(NoPermission.class)) {
                 return true;
             }
-            if (request.getMethod().equals("GET")) {
-                return true;
-            }
             String token = request.getHeader("Authorization");
             if (token == null) {
                 PrintWriter writer = response.getWriter();
