@@ -50,7 +50,6 @@ public class CommentService {
             commentEntityFlatList.addAll(comments);
             comments.stream().map(CommentEntity::getSubComments).forEach(commentEntityFlatList::addAll);
             commentEntityFlatList.sort(Comparator.comparingLong(IDEntity::getId));
-            System.out.println(commentEntityFlatList.stream().map(IDEntity::getId).toList());
         }
 
         // todo 异步处理 评论涉及的用户
@@ -74,7 +73,6 @@ public class CommentService {
         if (commentEntityFlatList.size() != 0) {
             List<Long> commentIDList = commentEntityFlatList.stream().map(CommentEntity::getId).toList();
             Map<Long, Map<String, Object>> likeMap = likeDao.getCommentsLike(commentIDList);
-            System.out.println(likeMap);
             for (CommentEntity c : commentEntityFlatList) {
                 Map<String, Object> likes = likeMap.get(c.getId());
                 if (likes != null) {
