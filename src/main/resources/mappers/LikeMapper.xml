@@ -16,6 +16,7 @@
         from likes
         where uid = #{uid}
           and cid = #{cid}
+        limit 1
     </delete>
     <select id="getCommentsLike" resultType="map">
         select sum(type) as 'like',
