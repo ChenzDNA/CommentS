@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="icu.chenz.comments.dao.ContextDao">
-    <insert id="createContext" parameterType="contextEntity" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <insert id="createContext">
         insert into contexts(`name`, ctime) value (#{context}, round(unix_timestamp(current_timestamp(3)) * 1000, 0))
     </insert>
     <update id="updateTop">
