@@ -37,7 +37,7 @@ public class CommentService {
         HashMap<String, Object> res = new HashMap<>(2);
         res.put("author", authorConfig.getName());
         List<CommentEntity> comments = commentDao.getByContext(context);
-        if (needContext(comments, user)) {
+        if (needContext(comments, user, context)) {
             contextDao.createContext(context);
         }
         res.put("comments", comments);
@@ -133,7 +133,10 @@ public class CommentService {
         return contextDao.updateTop(commentId);
     }
 
-    private boolean needContext(List<CommentEntity> commentEntityList, Long user) {
+    private boolean needContext(List<CommentEntity> commentEntityList, Long user, String context) {
+        if (contextDao.getContextByName(context) != null) {
+            return false;
+        }
         if (commentEntityList != null && commentEntityList.size() != 0 || user == null) {
             return false;
         }
