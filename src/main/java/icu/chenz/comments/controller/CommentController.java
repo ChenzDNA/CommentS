@@ -5,6 +5,7 @@ import icu.chenz.comments.entity.IDEntity;
 import icu.chenz.comments.service.CommentService;
 import icu.chenz.comments.utils.HandleErrors;
 import icu.chenz.comments.utils.R;
+import icu.chenz.comments.utils.annotation.OptionalToken;
 import icu.chenz.comments.utils.exception.BadRequest;
 import icu.chenz.comments.utils.exception.ForbiddenRequest;
 import jakarta.annotation.Resource;
@@ -46,6 +47,7 @@ public class CommentController {
         return R.ok(commentService.delete(user, commentId.getId()));
     }
 
+    @OptionalToken
     @GetMapping("/getByContext")
     public R<Map<String, Object>> getByContext(@RequestAttribute(value = "user", required = false) Long user, @RequestParam("context") String context) {
         return R.ok(commentService.getByContext(user, context));

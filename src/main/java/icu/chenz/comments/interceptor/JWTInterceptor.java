@@ -2,6 +2,7 @@ package icu.chenz.comments.interceptor;
 
 import icu.chenz.comments.utils.R;
 import icu.chenz.comments.utils.annotation.NoPermission;
+import icu.chenz.comments.utils.annotation.OptionalToken;
 import icu.chenz.comments.utils.cryption.JWTEncryption;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,18 +26,26 @@ public class JWTInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod method) {
-            response.setHeader("Content-Type","application/json;charset=utf8");
+            response.setHeader("Content-Type", "application/json;charset=utf8");
             if (method.hasMethodAnnotation(NoPermission.class)) {
+                return true;
+            }
+            boolean optionalToken = method.hasMethodAnnotation(OptionalToken.class);
+            if (request.getMethod().equals("GET") && !optionalToken) {
                 return true;
             }
             String token = request.getHeader("Authorization");
             if (token == null) {
+                if (optionalToken) {
+                    return true;
+                }
                 PrintWriter writer = response.getWriter();
                 writer.write(R.fail(HttpStatus.UNAUTHORIZED, "未登录").toString());
                 writer.close();
                 return false;
+            } else {
+                request.setAttribute("user", JWTEncryption.verifyToken(token));
             }
-            request.setAttribute("user", JWTEncryption.verifyToken(token));
         }
         return true;
     }
